@@ -15,6 +15,7 @@
   </head>
   <body>
     <ul id="messages"></ul>
+    <div id="bottom-dummy"></div>
     <form action="">
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
@@ -30,6 +31,7 @@
         });
         socket.on('chat message', function(msg){
           $('#messages').append($('<li>').html(msg));
+          $(window).scrollTop($("#bottom-dummy").offset().top);
         });
       });
     </script>
