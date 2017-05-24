@@ -7,10 +7,11 @@ fluentdを使って複数のサーバからログを収集。nodejs + socket.io�
 ### td-agentのインストール
 
 ```
+sudo yum update -y
 curl -L https://toolbelt.treasuredata.com/sh/install-redhat-td-agent2.sh | sh
 
 sudo systemctl enable td-agent.service
-sudo service td-agnet start
+sudo service td-agent start
 
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld.service
