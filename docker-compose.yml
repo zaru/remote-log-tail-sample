@@ -1,0 +1,18 @@
+version: '3'
+services:
+  aggregator:
+    build: ./aggregator
+    volumes:
+      - ./aggregator/fluentd:/fluentd/etc
+    environment:
+      FLUENTD_CONF: fluent.conf
+    ports:
+      - 24224:24224
+  test1:
+    build: ./test1
+    volumes:
+      - ./test1/fluentd:/fluentd/etc
+    environment:
+      FLUENTD_CONF: fluent.conf
+    ports:
+      - 24225:24224
