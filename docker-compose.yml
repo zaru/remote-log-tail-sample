@@ -4,10 +4,19 @@ services:
     build: ./aggregator
     volumes:
       - ./aggregator/fluentd:/fluentd/etc
+      - ./remote_logs:/tmp/remote_logs
     environment:
       FLUENTD_CONF: fluent.conf
     ports:
       - 24224:24224
+  remotetailer:
+    build: ./remotetailer
+    volumes:
+      - ./:/app
+      - ./remote_logs:/tmp/remote_logs
+    tty: true
+    ports:
+      - 3000:3000
   test1:
     build: ./test1
     volumes:
@@ -16,3 +25,14 @@ services:
       FLUENTD_CONF: fluent.conf
     ports:
       - 24225:24224
+  rails-sample1:
+    build: ./rails-sample1
+    volumes:
+      - ./rails-sample1:/app
+    ports:
+      - 9292:9292
+    command: ["rails", "server", "-b", "0.0.0.0"]
+    logging:
+      driver: fluentd
+      options:
+        tag: remotetail.{{.FullID}}

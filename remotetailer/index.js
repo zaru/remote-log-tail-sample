@@ -5,12 +5,12 @@ var io = require('socket.io')(http);
 
 let Tail = require('tail').Tail
 let colors = require('colors')
-let tail = new Tail("/tmp/remote_logs/remotetail.test2-rails/log.sym")
+let tail = new Tail("/tmp/remote_logs/remotetail.69a001d72c27e032b4eb59876adab7439681c6b97d26061f9dd58206c8a8b90d/log.sym")
 let ansiHTML = require('ansi-html');
 tail.on("line", function(line) {
   // io.emit('chat message', line)
   let data = parse(line)
-  io.emit('chat message', ansiHTML(data.timestamp.gray + "\t" + data.tag.blue + "\t" + data.host.red + "\t" + data.message.green))
+  io.emit('chat message', ansiHTML(data.timestamp.gray + "\t" + data.tag.blue + "\t" + data.container_id.red + "\t" + data.log.green))
 });
 
 app.get('/', function(req, res){
@@ -39,12 +39,11 @@ http.listen(3000, function(){
 function parse(line) {
   let words = line.split("\t")
   let params = JSON.parse(words[2].replace(/\\/g, '\\'))
-  
   return {
     timestamp: words[0],
     tag: words[1],
-    message: params.message,
-    host: params.host
+    log: params.log,
+    container_id: params.container_id
   }
 }
 //
